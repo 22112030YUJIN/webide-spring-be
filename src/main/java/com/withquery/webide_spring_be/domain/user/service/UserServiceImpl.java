@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
 		if (Objects.equals(user.getNickname(), request.nickname())) {
 
-			String token = jwtTokenProvider.generateToken(user.getEmail(), user.getNickname());
+			String token = jwtTokenProvider.generateToken(user.getEmail(), user.getNickname(), user.getId());
 			return new UserUpdateResponse(user.getNickname(), token, "닉네임이 변경되지 않았습니다.");
 		}
 
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		user.setNickname(request.nickname());
 		userRepository.save(user);
 
-		String newToken = jwtTokenProvider.generateToken(user.getEmail(), user.getNickname());
+		String newToken = jwtTokenProvider.generateToken(user.getEmail(), user.getNickname(), user.getId());
 
 		return new UserUpdateResponse(user.getNickname(), newToken, "사용자 정보가 수정되었습니다.");
 	}

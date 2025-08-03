@@ -93,7 +93,7 @@ public class UserController {
 	})
 	public ResponseEntity<UserInfoResponse> getMyInfo(Authentication authentication) {
 		CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
-		return ResponseEntity.ok(new UserInfoResponse(userDetails.getEmail(), userDetails.getNickname()));
+		return ResponseEntity.ok(new UserInfoResponse(userDetails.getId(), userDetails.getEmail(), userDetails.getNickname()));
 	}
 
 	@PutMapping("/me")

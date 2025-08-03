@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(request.password(), passwordHash)) {
             throw new RuntimeException("이메일 또는 비밀번호가 잘못되었습니다.");
         }
-        String token = jwtTokenProvider.generateToken(user.getEmail(), user.getNickname());
+        String token = jwtTokenProvider.generateToken(user.getEmail(), user.getNickname(), user.getId());
 
         return new LoginResponse("로그인이 성공했습니다.", token, user.getNickname());
     }
