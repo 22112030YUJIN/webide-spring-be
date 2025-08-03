@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.withquery.webide_spring_be.domain.collaboration.entity.ProjectInvitation;
 import com.withquery.webide_spring_be.domain.collaboration.entity.ProjectMember;
 import com.withquery.webide_spring_be.domain.file.entity.File;
 
@@ -91,5 +92,10 @@ public class Project {
 		return this.isPublic || this.ownerId.equals(userId) ||
 			this.members.stream().anyMatch(member -> member.getUserId().equals(userId));
 	}
+
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
+	@Schema(description = "프로젝트에 보낸 초대장 목록")
+	private List<ProjectInvitation> invitations = new ArrayList<>();
 
 }
