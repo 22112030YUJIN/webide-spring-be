@@ -181,7 +181,6 @@ public class FileServiceImpl implements FileService {
 		}
 
 		fileRepository.delete(file);
-		log.debug("파일 삭제 완료: {} (ID: {}, Path: {})", file.getName(), file.getId(), file.getPath());
 	}
 
 
