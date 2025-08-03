@@ -110,9 +110,12 @@ public class ProjectServiceImpl implements ProjectService {
 		Project project = getProjectWithPermissionCheck(projectId, userEmail, ProjectMemberRole.OWNER);
 
 		fileService.deleteProjectFilesRecursively(projectId);
+		projectRepository.deleteById(projectId);
 		projectRepository.delete(project);
 
 		log.info("프로젝트가 성공적으로 삭제되었습니다.");
+
+
 	}
 
 	@Override
