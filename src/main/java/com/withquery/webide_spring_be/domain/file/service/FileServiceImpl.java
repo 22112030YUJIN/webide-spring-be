@@ -167,11 +167,18 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public void deleteProjectFilesRecursively(Long projectId) {
+		log.info("프로젝트 파일 삭제 시작: projectId = {}", projectId);
+
 		List<File> rootFiles = fileRepository.findByProjectIdAndParentIdIsNull(projectId);
+		log.info("루트 파일 개수: {}", rootFiles.size());
 
 		for (File rootFile : rootFiles) {
+			log.info("루트 파일 삭제 시작: {} (ID: {})", rootFile.getName(), rootFile.getId());
 			deleteFileRecursively(rootFile);
+			log.info("루트 파일 삭제 완료: {}", rootFile.getName());
 		}
+
+		log.info("프로젝트 파일 삭제 완료: projectId = {}", projectId);
 	}
 	private void deleteFileRecursively(File file) {
 		List<File> children = fileRepository.findByParentId(file.getId());
