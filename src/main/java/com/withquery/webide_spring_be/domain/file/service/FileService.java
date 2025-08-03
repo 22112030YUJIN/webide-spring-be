@@ -23,7 +23,5 @@ public interface FileService {
 
 	FileResponse updateFileContent(Long projectId, FileContentUpdateRequest request);
 
-	void deleteAllProjectFiles(Long projectId);
-
 	void deleteProjectFilesRecursively(Long projectId);
 }

@@ -132,12 +132,8 @@ public class FileServiceImpl implements FileService {
 			throw new RuntimeException("루트 디렉토리는 삭제할 수 없습니다.");
 		}
 
-		List<File> children = fileRepository.findByParentId(fileId);
-		for (File child : children) {
-			deleteFile(projectId, child.getId());
-		}
+		deleteFileRecursively(file);
 
-		fileRepository.delete(file);
 		log.info("파일/디렉토리 삭제를 성공적으로 완료하였습니다.");
 	}
 
@@ -170,29 +166,24 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void deleteAllProjectFiles(Long projectId) {
-
-		fileRepository.deleteById(projectId);
-
-	}
-
-	@Override
 	public void deleteProjectFilesRecursively(Long projectId) {
 		List<File> rootFiles = fileRepository.findByProjectIdAndParentIdIsNull(projectId);
 
 		for (File rootFile : rootFiles) {
-			deleteFileAndChildrenRecursively(rootFile);
+			deleteFileRecursively(rootFile);
 		}
 	}
-
-	private void deleteFileAndChildrenRecursively(File file) {
+	private void deleteFileRecursively(File file) {
 		List<File> children = fileRepository.findByParentId(file.getId());
+
 		for (File child : children) {
-			deleteFileAndChildrenRecursively(child);
+			deleteFileRecursively(child);
 		}
 
 		fileRepository.delete(file);
+		log.debug("파일 삭제 완료: {} (ID: {}, Path: {})", file.getName(), file.getId(), file.getPath());
 	}
+
 
 	private FileTreeNode buildFileTree(List<File> files) {
 		Map<Long, FileTreeNode> nodeMap = new HashMap<>();
