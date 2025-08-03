@@ -33,4 +33,6 @@ public interface ProjectMemberService {
 	void handleInvitation(Long invitationId, String userEmail, InvitationActionRequest request);
 
 	void leaveProject(Long projectId, String userEmail);
+
+	void deleteProjectMembersByProjectId(Long projectId);
 }

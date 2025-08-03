@@ -230,4 +230,15 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		member.setIsActive(false);
 		projectMemberRepository.save(member);
 	}
+
+	@Override
+	public void deleteProjectMembersByProjectId(Long projectId) {
+		List<ProjectMember> membersToDelete = projectMemberRepository.findByProjectId(projectId);
+
+		if (!membersToDelete.isEmpty()) {
+			projectMemberRepository.deleteAll(membersToDelete);
+		} else {
+			log.info("프로젝트 ID {}에 삭제할 멤버가 없습니다.", projectId);
+		}
+	}
 }

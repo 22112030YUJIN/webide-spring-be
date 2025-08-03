@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.withquery.webide_spring_be.domain.collaboration.repository.ProjectInvitationRepository;
 import com.withquery.webide_spring_be.domain.collaboration.service.ProjectMemberService;
 import com.withquery.webide_spring_be.domain.file.dto.FileTreeNode;
 import com.withquery.webide_spring_be.domain.file.service.FileService;
@@ -35,6 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
 	private final ProjectMemberService projectMemberService;
 	private final FileService fileService;
 	private final UserRepository userRepository;
+	private final ProjectInvitationRepository projectInvitationRepository;
 
 	@Override
 	public ProjectResponse createProject(ProjectCreateRequest request, String userEmail) {
@@ -109,12 +111,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public void deleteProject(Long projectId, String userEmail) {
 		Project project = getProjectWithPermissionCheck(projectId, userEmail, ProjectMemberRole.OWNER);
 
+		projectInvitationRepository.deleteByProjectId(projectId);
 		fileService.deleteProjectFilesRecursively(projectId);
-		projectRepository.deleteById(projectId);
+		projectMemberService.deleteProjectMembersByProjectId(projectId);
 		projectRepository.delete(project);
-
-		log.info("프로젝트가 성공적으로 삭제되었습니다.");
-
 
 	}
 

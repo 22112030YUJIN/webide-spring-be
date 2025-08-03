@@ -31,4 +31,5 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 	List<ProjectMember> findActiveMembersByProjectIdAndRole(@Param("projectId") Long projectId, @Param("role")
 	ProjectMemberRole role);
 
+	List<ProjectMember> findByProjectId(Long projectId);
 }

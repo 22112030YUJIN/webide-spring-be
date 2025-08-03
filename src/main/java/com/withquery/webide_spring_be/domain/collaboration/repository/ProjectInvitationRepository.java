@@ -24,4 +24,6 @@ public interface ProjectInvitationRepository extends JpaRepository<ProjectInvita
 	Optional<ProjectInvitation> findByIdWithProject(@Param("id") Long invitationId);
 
 	List<ProjectInvitation> findByInviterIdOrderByCreatedAtDesc(Long inviterId);
+
+	void deleteByProjectId(Long projectId);
 }
